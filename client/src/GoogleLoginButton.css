@@ -1,0 +1,207 @@
+/* ==========================================
+   SupportHub — Google Sign-In
+   Structure: wrapper → frame → button / status / error
+   ========================================== */
+
+.google-login {
+  --gl-blue: var(--blue-600, #2457d6);
+  --gl-border: var(--slate-200, #dde3ec);
+  --gl-text: var(--slate-700, #364259);
+  --gl-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  margin: 18px 0;
+  animation: gl-fade-in 0.4s ease both;
+}
+
+/* ---------- Frame: rounded-rectangle card around the Google button ---------- */
+.google-login__frame {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 3px;
+  box-sizing: border-box;
+  border: 1px solid var(--gl-border);
+  border-radius: var(--gl-radius);
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%), 0 3px 8px rgb(16 24 40 / 3%);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.google-login__frame:hover {
+  border-color: #b8c8ef;
+  box-shadow: 0 6px 16px rgb(36 87 214 / 10%), 0 1px 3px rgb(16 24 40 / 4%);
+  transform: translateY(-1px);
+}
+
+.google-login__frame:focus-within {
+  outline: 3px solid rgb(36 87 214 / 22%);
+  outline-offset: 2px;
+  border-color: var(--gl-blue);
+}
+
+.google-login__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  min-height: 44px;
+}
+
+.google-login__button iframe {
+  display: block;
+  max-width: 100%;
+}
+
+/* Signing-in state */
+.google-login[aria-busy="true"] {
+  cursor: progress;
+}
+
+.google-login[aria-busy="true"] .google-login__frame {
+  opacity: 0.6;
+  pointer-events: none;
+  transform: none;
+}
+
+/* ---------- Status + Error ---------- */
+.google-login__status,
+.google-login__error {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: var(--gl-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.google-login__status {
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #dce6fb;
+  background: linear-gradient(135deg, #f8faff, #eef4ff);
+  color: var(--gl-text);
+}
+
+.google-login__error {
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid #f3c3c0;
+  background: #fff6f5;
+  color: #a62924;
+  box-shadow: 0 2px 5px rgb(166 41 36 / 4%);
+}
+
+.google-login__error::before {
+  content: "!";
+  display: grid;
+  place-items: center;
+  flex: 0 0 19px;
+  width: 19px;
+  height: 19px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: #a62924;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.google-login__spinner {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #dce6fb;
+  border-top-color: var(--gl-blue);
+  border-right-color: var(--gl-blue);
+  border-radius: 50%;
+  animation: gl-spin 0.75s linear infinite;
+}
+
+/* ---------- Divider ("or") ---------- */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 16px 0;
+  color: var(--slate-500, #5b6780);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--slate-200, #dde3ec);
+}
+
+/* ---------- Animations ---------- */
+@keyframes gl-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes gl-fade-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .google-login {
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .google-login__status,
+  .google-login__error {
+    font-size: 0.8rem;
+  }
+
+  .google-login__error {
+    padding: 10px 12px;
+  }
+}
+
+/* ---------- Accessibility ---------- */
+@media (forced-colors: active) {
+  .google-login__frame,
+  .google-login__status,
+  .google-login__error {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+
+  .google-login__spinner {
+    border-color: GrayText;
+    border-top-color: Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .google-login,
+  .google-login__frame {
+    animation: none;
+    transition: none;
+  }
+
+  .google-login__spinner {
+    animation-duration: 2s;
+  }
+}
